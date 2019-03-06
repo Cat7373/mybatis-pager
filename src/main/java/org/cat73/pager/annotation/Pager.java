@@ -2,7 +2,7 @@ package org.cat73.pager.annotation;
 
 import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.export.IPagerExport;
-import org.cat73.pager.result.Results;
+import org.cat73.pager.result.PagerResults;
 
 import java.lang.annotation.*;
 import java.util.Collection;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * 被此注解标记的 Controller 中的 RequestHandler 将自动支持分页查询
  * <p>请求的返回值为 {@link Map} 时，会尝试读取其 data 属性，如存在且值为 {@link Collection} 的子类，则会将其视为查询结果，并将其转换为 {@link PageBody}</p>
- * <p>请求的返回值为其他类型时，请使用 {@link Results#registerHandler} 来支持这种类型</p>
+ * <p>请求的返回值为其他类型时，请使用 {@link PagerResults#registerHandler} 来支持这种类型</p>
  * <p>正常情况下(外部访问而非内部调用时，且方法上直接或间接修饰着`@ResponseBody`)，结果会序列化成`JSON`输出，例：</p>
  * <pre>{"page":1,"totalPage":5,"totalRow":48,"listData":[...]}</pre>
  * <p>当请求中附带 pageSize 参数时，则以这个参数的值当做每页的结果数</p>

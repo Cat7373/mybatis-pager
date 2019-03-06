@@ -11,7 +11,7 @@ import org.cat73.pager.autoconfigure.PagerConfigure;
 import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.exception.PagerException;
 import org.cat73.pager.export.IPagerExport;
-import org.cat73.pager.result.Results;
+import org.cat73.pager.result.PagerResults;
 import org.cat73.pager.util.ServletBox;
 import org.cat73.pager.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ public class PagerPlugin {
         }
 
         // 读取结果中的数据
-        List<?> data = Results.getData(resultObject);
+        List<?> data = PagerResults.getData(resultObject);
 
         // 根据是否为导出模式选择行为
         if (export) {
@@ -91,7 +91,7 @@ public class PagerPlugin {
             long totalPage = page.getPages();
 
             // 修改结果中的数据
-            Results.setData(resultObject, new PageBody<>()
+            PagerResults.setData(resultObject, new PageBody<>()
                     .setListData((List<Object>) data)
                     .setPage(currentPage)
                     .setTotalRow(totalRow)

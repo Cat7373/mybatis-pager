@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * 返回值处理工具类
  */
-public final class Results {
-    private Results() {
+public final class PagerResults {
+    private PagerResults() {
         throw new UnsupportedOperationException();
     }
 
@@ -31,11 +31,11 @@ public final class Results {
      * @param handler 被注册的处理器
      */
     public static void registerHandler(IPagerResultHandler handler) {
-        if (Results.handlers.contains(handler)) {
+        if (PagerResults.handlers.contains(handler)) {
             throw new IllegalArgumentException("handler already exists.");
         }
 
-        Results.handlers.add(handler);
+        PagerResults.handlers.add(handler);
     }
 
     /**
@@ -44,7 +44,7 @@ public final class Results {
      * @return 找到的处理器
      */
     private static IPagerResultHandler findSupportHandler(Object result) {
-        IPagerResultHandler handler = Results.handlers.stream()
+        IPagerResultHandler handler = PagerResults.handlers.stream()
                 .filter(h -> {
                     try {
                         return h.support(result);
@@ -55,8 +55,8 @@ public final class Results {
                 .findFirst().orElse(null);
         if (handler == null) {
             try {
-                if (Results.mapHandler.support(result)) {
-                    handler = Results.mapHandler;
+                if (PagerResults.mapHandler.support(result)) {
+                    handler = PagerResults.mapHandler;
                 }
             } catch (Exception e) {
                 // ignore
@@ -76,7 +76,7 @@ public final class Results {
     public static List<?> getData(Object result) {
         Collection<?> collection;
         try {
-            collection = Results.findSupportHandler(result)
+            collection = PagerResults.findSupportHandler(result)
                     .getData(result);
         } catch (Exception e) {
             throw new PagerException(e);
@@ -96,7 +96,7 @@ public final class Results {
      */
     public static void setData(Object result, PageBody<?> pageBody) {
         try {
-            Results.findSupportHandler(result)
+            PagerResults.findSupportHandler(result)
                     .setData(result, pageBody);
         } catch (Exception e) {
             throw new PagerException(e);
