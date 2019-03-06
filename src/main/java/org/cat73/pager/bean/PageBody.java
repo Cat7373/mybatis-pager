@@ -1,4 +1,4 @@
-package org.cat73.pager.application.bean;
+package org.cat73.pager.bean;
 
 import java.util.List;
 import java.util.Objects;

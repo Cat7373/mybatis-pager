@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.cat73.pager.annotation.Pager;
 import org.cat73.pager.autoconfigure.PagerConfigure;
-import org.cat73.pager.application.bean.PageBody;
+import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.exception.PagerException;
 import org.cat73.pager.export.IPagerExport;
 import org.cat73.pager.result.Results;

@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.cat73.pager.SpringBootTestBase;
-import org.cat73.pager.application.bean.PageBody;
+import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.application.bean.Result;
 import org.cat73.pager.application.test.entity.TestEntity;
 import org.cat73.pager.internal.CodeMatcher;

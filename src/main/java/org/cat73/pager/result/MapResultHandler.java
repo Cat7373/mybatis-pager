@@ -1,6 +1,6 @@
 package org.cat73.pager.result;
 
-import org.cat73.pager.application.bean.PageBody;
+import org.cat73.pager.bean.PageBody;
 
 import java.util.Collection;
 import java.util.Map;

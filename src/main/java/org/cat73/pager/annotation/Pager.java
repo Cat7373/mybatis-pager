@@ -1,6 +1,6 @@
 package org.cat73.pager.annotation;
 
-import org.cat73.pager.application.bean.PageBody;
+import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.export.IPagerExport;
 import org.cat73.pager.result.Results;
 

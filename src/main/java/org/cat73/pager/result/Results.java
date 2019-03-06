@@ -1,6 +1,6 @@
 package org.cat73.pager.result;
 
-import org.cat73.pager.application.bean.PageBody;
+import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.exception.PagerException;
 
 import java.util.ArrayList;

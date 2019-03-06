@@ -1,6 +1,6 @@
 package org.cat73.pager.application.config;
 
-import org.cat73.pager.application.bean.PageBody;
+import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.application.bean.Result;
 import org.cat73.pager.result.IPagerResultHandler;
 import org.cat73.pager.result.Results;

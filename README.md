@@ -7,7 +7,7 @@
 * `Mybatis 3.x`
 
 ## 使用文档
-<!-- TODO -->
+1. [使用文档](docs/1.QuickStart.md)
 
 ## 开发者
 ### 构建说明
