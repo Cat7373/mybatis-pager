@@ -4,9 +4,13 @@ import io.spring.gradle.dependencymanagement.dsl.ImportsHandler
 // 插件
 plugins {
     `java-library`
+    signing
+    `maven-publish`
     id("org.springframework.boot") version "2.1.3.RELEASE" apply false
 }
 apply(plugin = "org.gradle.java-library")
+apply(plugin = "org.gradle.signing")
+apply(plugin = "org.gradle.maven-publish")
 apply(plugin = "io.spring.dependency-management")
 
 group = "org.cat73"
@@ -28,6 +32,11 @@ val dependencyNames = mapOf(
         "junit-jupiter-api"                   to "org.junit.jupiter:junit-jupiter-api",
         "junit-jupiter-engine"                to "org.junit.jupiter:junit-jupiter-engine"
 )
+
+// GPG Sign
+extra["signing.keyId"] = System.getProperty("gpg.keyId")
+extra["signing.password"] = System.getProperty("gpg.password")
+extra["signing.secretKeyRingFile"] = System.getProperty("gpg.secretKeyFile")
 
 // Spring 依赖管理
 configure<DependencyManagementExtension> {
@@ -76,4 +85,94 @@ dependencies {
     testImplementation      ("${dependencyNames["junit-jupiter-api"]}")
     testRuntimeOnly         ("${dependencyNames["junit-jupiter-engine"]}")
     testRuntimeOnly         ("${dependencyNames["mysql-connector-java"]}")
+}
+
+// 源码 jar 包(用于发布到 Maven 库)
+val sourcesJar by tasks.registering(Jar::class) {
+    dependsOn(JavaPlugin.CLASSES_TASK_NAME)
+    archiveClassifier.set("sources")
+    from(sourceSets["main"].allJava)
+}
+
+// JavaDoc jar 包配置
+tasks.withType<Javadoc> {
+    options.encoding = "UTF-8"
+
+    (options as? StandardJavadocDocletOptions)?.also {
+        it.charSet = "UTF-8"
+        it.isAuthor = true
+        it.isVersion = true
+        it.links = listOf("https://docs.oracle.com/javase/8/docs/api")
+        if (JavaVersion.current().isJava9Compatible) {
+            it.addBooleanOption("html5", true)
+        }
+    }
+}
+
+// JavaDoc 包(用于发布到 Maven 库)
+val javadocJar by tasks.registering(Jar::class) {
+    dependsOn(JavaPlugin.JAVADOC_TASK_NAME)
+    archiveClassifier.set("javadoc")
+    from(tasks["javadoc"])
+}
+
+// 发布到 Maven 库
+publishing {
+    repositories {
+        maven {
+            // 目标仓库
+            val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            setUrl(if (version.toString().endsWith("RELEASE")) releasesRepoUrl else snapshotsRepoUrl)
+
+            // 登录凭据，从启动参数中读取，避免直接把密码暴漏在源代码中
+            credentials {
+                username = System.getProperty("nexus.username")
+                password = System.getProperty("nexus.password")
+            }
+        }
+    }
+    publications {
+        register("mavenJava", MavenPublication::class) {
+            pom {
+                name.set("mybatis-pager-spring-boot-starter")
+                description.set("为 SpringBoot(基于 Servlet 的 Web 项目) + Mybatis 提供简单易用的分页查询支持")
+                inceptionYear.set("2019")
+                url.set("https://github.com/Cat7373/mybatis-pager-spring-boot-starter")
+
+                artifactId = project.name
+                groupId = "${project.group}"
+                version = "${project.version}"
+                packaging = "jar"
+
+                scm {
+                    connection.set("scm:git@github.com:Cat7373/mybatis-pager-spring-boot-starter.git")
+                    developerConnection.set("scm:git@github.com:Cat7373/mybatis-pager-spring-boot-starter.git")
+                    url.set("https://github.com/Cat7373/mybatis-pager-spring-boot-starter")
+                }
+
+                issueManagement {
+                    url.set("https://github.com/Cat7373/mybatis-pager-spring-boot-starter/issues")
+                }
+
+                developers {
+                    developer {
+                        id.set("Cat73")
+                        name.set("Cat73")
+                        email.set("root@cat73.org")
+                        url.set("https://github.com/Cat7373")
+                        timezone.set("Asia/Shanghai")
+                    }
+                }
+            }
+
+            from(components["java"])
+            artifact(sourcesJar.get())
+            artifact(javadocJar.get())
+        }
+    }
+
+    signing {
+        sign(publishing.publications.getByName("mavenJava"))
+    }
 }
