@@ -13,8 +13,12 @@
 ### 构建说明
 <!-- TODO -->
 
+## FAQ
+* 为何没使用`Lombok`？
+    * `Lombok`对非`Java`的语言如`Kotlin`不太友好，与其想支持时再去掉，不如一开始就不用
+
 ## 参考内容
-> 按字母序进行排序，排名不分先后
+> 仅按字母序进行排序，无先后顺序
 
 * [Mybatis](https://github.com/mybatis/mybatis-3)
 * [Mybatis-PageHelper](https://github.com/pagehelper/Mybatis-PageHelper)

@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.cat73.pager.autoconfigure.PagerAutoConfigure
