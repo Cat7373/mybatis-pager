@@ -36,7 +36,7 @@ val dependencyNames = mapOf(
 // GPG Sign
 extra["signing.keyId"] = System.getProperty("gpg.keyId")
 extra["signing.password"] = System.getProperty("gpg.password")
-extra["signing.secretKeyRingFile"] = System.getProperty("gpg.secretKeyFile")
+extra["signing.secretKeyRingFile"] = System.getProperty("gpg.secretKeyRingFile")
 
 // Spring 依赖管理
 configure<DependencyManagementExtension> {

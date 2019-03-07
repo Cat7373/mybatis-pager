@@ -36,6 +36,7 @@ public final class PageBody<T> {
     /**
      * 设置实际的数据列表
      * @param listData 新的数据列表
+     * @return 自身实例，方便链式调用
      */
     public PageBody<T> setListData(List<T> listData) {
         this.listData = listData;
@@ -53,6 +54,7 @@ public final class PageBody<T> {
     /**
      * 设置当前是第几页
      * @param page 第几页
+     * @return 自身实例，方便链式调用
      */
     public PageBody<T> setPage(long page) {
         this.page = page;
@@ -70,6 +72,7 @@ public final class PageBody<T> {
     /**
      * 设置总记录数
      * @param totalRow 总记录数
+     * @return 自身实例，方便链式调用
      */
     public PageBody<T> setTotalRow(long totalRow) {
         this.totalRow = totalRow;
@@ -87,6 +90,7 @@ public final class PageBody<T> {
     /**
      * 设置总页数
      * @param totalPage 总页数
+     * @return 自身实例，方便链式调用
      */
     public PageBody<T> setTotalPage(long totalPage) {
         this.totalPage = totalPage;
