@@ -1,6 +1,10 @@
 # mybatis-pager-spring-boot-starter
 为 SpringBoot(基于 Servlet 的 Web 项目) + Mybatis 提供简单易用的分页查询支持
 
+
+![](https://img.shields.io/maven-central/v/org.cat73/mybatis-pager-spring-boot-starter.svg)
+![](https://img.shields.io/github/license/Cat7373/mybatis-pager-spring-boot-starter.svg)
+
 ## 功能说明
 以前要做一个分页查询需要做的：
 
@@ -21,7 +25,7 @@
 * `Mybatis 3.x`
 
 ## 使用文档
-1. [使用文档](docs/1.QuickStart.md)
+1. [快速入门](docs/1.QuickStart.md)
 
 ## 开发者
 ### 构建说明
