@@ -155,6 +155,13 @@ publishing {
                     url.set("https://github.com/Cat7373/mybatis-pager-spring-boot-starter/issues")
                 }
 
+                licenses {
+                    license {
+                        name.set("GNU Lesser General Public License v3.0")
+                        url.set("https://raw.githubusercontent.com/Cat7373/mybatis-pager-spring-boot-starter/master/LICENSE")
+                    }
+                }
+
                 developers {
                     developer {
                         id.set("Cat73")
