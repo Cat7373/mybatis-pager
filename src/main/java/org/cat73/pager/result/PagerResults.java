@@ -5,9 +5,7 @@ import org.cat73.pager.exception.PagerException;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * 返回值处理工具类
@@ -20,24 +18,51 @@ public final class PagerResults {
     /**
      * 返回值处理器列表
      */
-    private static final List<IPagerResultHandler<?>> handlers = new ArrayList<>();
+    private static final List<IPagerResultHandler<Object>> handlers = new ArrayList<>();
+    /**
+     * 处理器的缓存列表
+     */
+    private static final Map<Class<?>, IPagerResultHandler<Object>> handlerCaches = new HashMap<>();
 
     /**
      * 注册一个返回值处理器，越晚注册的处理器会越优先被使用
      * @param handler 被注册的处理器
      */
     public static void registerHandler(IPagerResultHandler<?> handler) {
-        if (PagerResults.handlers.contains(handler)) {
+        if (handler == null) {
+            throw new NullPointerException("handler");
+        }
+
+        // 强转成 Object 泛型
+        IPagerResultHandler<Object> typeSafeHandler = PagerResults.typeSafeHandler(handler);
+
+        // 校验是否已存在
+        if (PagerResults.handlers.contains(typeSafeHandler)) {
             throw new IllegalArgumentException("handler already exists.");
         }
 
-        PagerResults.handlers.add(0, handler);
+        // 插入到头部
+        PagerResults.handlers.add(0, typeSafeHandler);
     }
 
-    // TODO 缓存机制？
-    // TODO javadoc
+    /**
+     * 强转成 Object 泛型
+     * @param handler ? 泛型的返回值处理器
+     * @return Object 泛型的返回值处理器
+     */
     @SuppressWarnings("unchecked")
-    private static boolean isSupport(IPagerResultHandler<?> handler, Object result) {
+    private static IPagerResultHandler<Object> typeSafeHandler(IPagerResultHandler<?> handler) {
+        return (IPagerResultHandler<Object>) handler;
+    }
+
+    /**
+     * 判断一个返回值处理器是否支持一个返回值
+     * @param handler 返回值处理器
+     * @param result 返回值
+     * @return 是否支持
+     */
+    private static boolean isSupport(IPagerResultHandler<Object> handler, Object result) {
+        // 从返回值处理器中寻找 IPagerResultHandler 接口上的泛型参数
         Class<?> clazz = handler.getClass();
         out: while (true) {
             for (Type interfaceType : clazz.getGenericInterfaces()) {
@@ -59,10 +84,13 @@ public final class PagerResults {
             }
             clazz = clazz.getSuperclass();
         }
+        // 如果泛型一致，才去调用这个处理器的 support 方法
         if (clazz.isAssignableFrom(result.getClass())) {
             try {
-                return ((IPagerResultHandler<Object>) handler).support(result);
+                // 返回这个处理器是否支持这个返回值
+                return handler.support(result);
             } catch (Exception e) {
+                // 如果出现任何异常，则认为不支持
                 return false;
             }
         }
@@ -75,21 +103,37 @@ public final class PagerResults {
      * @param result 返回值
      * @return 找到的处理器
      */
-    @SuppressWarnings("unchecked")
     private static IPagerResultHandler<Object> findSupportHandler(Object result) {
-        IPagerResultHandler<?> handler = PagerResults.handlers.stream()
-                .filter(h -> {
-                    try {
-                        return PagerResults.isSupport(h, result);
-                    } catch (Exception e) {
-                        return false;
-                    }
-                })
-                .findFirst().orElse(null);
+        Class<?> resultClazz = result.getClass();
+
+        // 尝试搜索缓存
+        IPagerResultHandler<Object> handler = PagerResults.handlerCaches.get(resultClazz);
+
+        // 未命中，走常规搜索
+        if (handler == null) {
+            handler = PagerResults.handlers.stream()
+                    .filter(h -> {
+                        try {
+                            return PagerResults.isSupport(h, result);
+                        } catch (Exception e) {
+                            return false;
+                        }
+                    })
+                    .findFirst().orElse(null);
+        }
+
+        // 如果未找到则抛出异常
         if (handler == null) {
             throw new PagerException("未找到支持的 Handler");
         }
-        return ((IPagerResultHandler<Object>) handler);
+
+        // 如果允许缓存，则保存缓存
+        if (handler.allowCache()) {
+            handlerCaches.put(resultClazz, handler);
+        }
+
+        // 返回结果
+        return handler;
     }
 
     /**

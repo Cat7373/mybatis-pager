@@ -11,7 +11,10 @@ import java.util.Collection;
 public interface IPagerResultHandler<T> {
     /**
      * 是否允许缓存
-     * TODO 说明
+     * <p>允许缓存的处理器性能会好一些</p>
+     * <p>判断缓存命中的条件是，上次返回值的 Class 成功命中了这个 Handler</p>
+     * <p>因此如果仅简单的判断 Class 是否一致无法区分 Handler 时，请覆盖这个方法，并返回 false</p>
+     * <p><em>注意，如果要设置为返回 false，请将所有 Class 一致的类均设置为 false</em></p>
      * @return 是否允许缓存
      */
     default boolean allowCache() {
