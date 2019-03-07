@@ -3,6 +3,8 @@ package org.cat73.pager.result;
 import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.exception.PagerException;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,27 +17,57 @@ public final class PagerResults {
         throw new UnsupportedOperationException();
     }
 
-    // TODO 缓存机制？
     /**
      * 返回值处理器列表
      */
-    private static Collection<IPagerResultHandler> handlers = new ArrayList<>();
-    /**
-     * 内置的支持 Map 类型的返回值的处理器
-     * <p>要求这个 Map 中存在 key 为 data 的值，且值为 {@link Collection} 的子类</p>
-     */
-    private static IPagerResultHandler mapHandler = new MapResultHandler();
+    private static final List<IPagerResultHandler<?>> handlers = new ArrayList<>();
 
     /**
-     * 注册一个返回值处理器
+     * 注册一个返回值处理器，越晚注册的处理器会越优先被使用
      * @param handler 被注册的处理器
      */
-    public static void registerHandler(IPagerResultHandler handler) {
+    public static void registerHandler(IPagerResultHandler<?> handler) {
         if (PagerResults.handlers.contains(handler)) {
             throw new IllegalArgumentException("handler already exists.");
         }
 
-        PagerResults.handlers.add(handler);
+        PagerResults.handlers.add(0, handler);
+    }
+
+    // TODO 缓存机制？
+    // TODO javadoc
+    @SuppressWarnings("unchecked")
+    private static boolean isSupport(IPagerResultHandler<?> handler, Object result) {
+        Class<?> clazz = handler.getClass();
+        out: while (true) {
+            for (Type interfaceType : clazz.getGenericInterfaces()) {
+                if (interfaceType instanceof ParameterizedType) {
+                    ParameterizedType parameterizedInterfaceType = (ParameterizedType) interfaceType;
+                    if (parameterizedInterfaceType.getRawType() == IPagerResultHandler.class) {
+                        Type typeArgument = parameterizedInterfaceType.getActualTypeArguments()[0];
+                        if (typeArgument instanceof ParameterizedType) {
+                            ParameterizedType parameterizedTypeArgument = (ParameterizedType) typeArgument;
+                            clazz = (Class<?>) parameterizedTypeArgument.getRawType();
+                            break out;
+                        } else {
+                            clazz = (Class<?>) typeArgument;
+                            break out;
+                        }
+                    }
+                }
+                clazz = clazz.getSuperclass();
+            }
+            clazz = clazz.getSuperclass();
+        }
+        if (clazz.isAssignableFrom(result.getClass())) {
+            try {
+                return ((IPagerResultHandler<Object>) handler).support(result);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -43,29 +75,21 @@ public final class PagerResults {
      * @param result 返回值
      * @return 找到的处理器
      */
-    private static IPagerResultHandler findSupportHandler(Object result) {
-        IPagerResultHandler handler = PagerResults.handlers.stream()
+    @SuppressWarnings("unchecked")
+    private static IPagerResultHandler<Object> findSupportHandler(Object result) {
+        IPagerResultHandler<?> handler = PagerResults.handlers.stream()
                 .filter(h -> {
                     try {
-                        return h.support(result);
+                        return PagerResults.isSupport(h, result);
                     } catch (Exception e) {
                         return false;
                     }
                 })
                 .findFirst().orElse(null);
         if (handler == null) {
-            try {
-                if (PagerResults.mapHandler.support(result)) {
-                    handler = PagerResults.mapHandler;
-                }
-            } catch (Exception e) {
-                // ignore
-            }
-        }
-        if (handler == null) {
             throw new PagerException("未找到支持的 Handler");
         }
-        return handler;
+        return ((IPagerResultHandler<Object>) handler);
     }
 
     /**

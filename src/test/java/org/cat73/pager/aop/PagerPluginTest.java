@@ -30,13 +30,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 class PagerPluginTest extends SpringBootTestBase {
     private static final String TEST_URL = "/api/test/list";
+    private static final String TEST2_URL = "/api/test/list2";
 
     /**
      * 不带参数的分页查询测试(默认第一页，10 条记录)
      */
     @Test
     void pagerTest01() {
-        Result<PageBody<TestEntity>> result = super.getMockAndResult(TEST_URL, new TypeReference<Result<PageBody<TestEntity>>>() {});
+        // 由于 Result2 和 Result 结构完全一致，因此生成的 JSON 也会完全一致
+        // Result2 的测试目标主要是 PagerResults 那边的处理，因此这里就没必要多写一个测试了
+        // 用普通的测试，拿 Result 直接接响应即可
+        Result<PageBody<TestEntity>> result = super.getMockAndResult(TEST2_URL, new TypeReference<Result<PageBody<TestEntity>>>() {});
 
         Assertions.assertNotNull(result.getData());
         Assertions.assertTrue(result.getData() instanceof PageBody);
