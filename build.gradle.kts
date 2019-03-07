@@ -14,7 +14,7 @@ apply(plugin = "org.gradle.maven-publish")
 apply(plugin = "io.spring.dependency-management")
 
 group = "org.cat73"
-version = "1.0.0-RELEASE"
+version = "1.0.1-SNAPSHOT"
 
 // 依赖版本控制
 val pagehelperVersion  = "1.2.10"
