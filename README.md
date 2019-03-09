@@ -3,7 +3,7 @@
 
 
 ![](https://img.shields.io/maven-central/v/org.cat73/mybatis-pager-spring-boot-starter.svg)
-![](https://img.shields.io/github/license/Cat7373/mybatis-pager-spring-boot-starter.svg)
+![](https://img.shields.io/github/license/Cat7373/mybatis-pager.svg)
 
 ## 功能说明
 以前要做一个分页查询需要做的：
