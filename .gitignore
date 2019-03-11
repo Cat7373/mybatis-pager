@@ -1,5 +1,7 @@
 build/
 .gradle/
+*.local
+*.local.*
 
 # Compiled class file
 *.class

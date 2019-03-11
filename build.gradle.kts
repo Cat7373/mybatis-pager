@@ -23,6 +23,7 @@ val dependencyNames = mapOf(
         "spring-boot-starter-aop"             to "org.springframework.boot:spring-boot-starter-aop",
         "spring-boot-starter-jdbc"            to "org.springframework.boot:spring-boot-starter-jdbc",
         "spring-boot-starter-web"             to "org.springframework.boot:spring-boot-starter-web",
+        "spring-boot-starter-undertow"        to "org.springframework.boot:spring-boot-starter-undertow",
         "spring-boot-configuration-processor" to "org.springframework.boot:spring-boot-configuration-processor",
         "spring-boot-starter-test"            to "org.springframework.boot:spring-boot-starter-test",
         "pagehelper-spring-boot-starter"      to "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion",
@@ -74,7 +75,10 @@ repositories {
 dependencies {
     api                     ("${dependencyNames["spring-boot-starter-aop"]}")
     api                     ("${dependencyNames["spring-boot-starter-jdbc"]}")
-    api                     ("${dependencyNames["spring-boot-starter-web"]}")
+    api                     ("${dependencyNames["spring-boot-starter-web"]}") {
+        exclude("org.springframework.boot", "spring-boot-starter-tomcat")
+    }
+    compileOnly             ("${dependencyNames["spring-boot-starter-undertow"]}")
     api                     ("${dependencyNames["pagehelper-spring-boot-starter"]}")
     api                     ("${dependencyNames["poi"]}")
     api                     ("${dependencyNames["poi-ooxml"]}")
@@ -82,6 +86,7 @@ dependencies {
     compileOnly             ("${dependencyNames["spring-boot-configuration-processor"]}")
 
     testImplementation      ("${dependencyNames["spring-boot-starter-test"]}")
+    testImplementation      ("${dependencyNames["spring-boot-starter-undertow"]}")
     testImplementation      ("${dependencyNames["junit-jupiter-api"]}")
     testRuntimeOnly         ("${dependencyNames["junit-jupiter-engine"]}")
     testRuntimeOnly         ("${dependencyNames["mysql-connector-java"]}")
@@ -138,7 +143,7 @@ publishing {
                 name.set("mybatis-pager-spring-boot-starter")
                 description.set("为 SpringBoot(基于 Servlet 的 Web 项目) + Mybatis 提供简单易用的分页查询支持")
                 inceptionYear.set("2019")
-                url.set("https://github.com/Cat7373/mybatis-pager-spring-boot-starter")
+                url.set("https://github.com/Cat7373/mybatis-pager")
 
                 artifactId = project.name
                 groupId = "${project.group}"
@@ -146,19 +151,19 @@ publishing {
                 packaging = "jar"
 
                 scm {
-                    connection.set("scm:git@github.com:Cat7373/mybatis-pager-spring-boot-starter.git")
-                    developerConnection.set("scm:git@github.com:Cat7373/mybatis-pager-spring-boot-starter.git")
-                    url.set("https://github.com/Cat7373/mybatis-pager-spring-boot-starter")
+                    connection.set("scm:git@github.com:Cat7373/mybatis-pager.git")
+                    developerConnection.set("scm:git@github.com:Cat7373/mybatis-pager.git")
+                    url.set("https://github.com/Cat7373/mybatis-pager")
                 }
 
                 issueManagement {
-                    url.set("https://github.com/Cat7373/mybatis-pager-spring-boot-starter/issues")
+                    url.set("https://github.com/Cat7373/mybatis-pager/issues")
                 }
 
                 licenses {
                     license {
                         name.set("GNU Lesser General Public License v3.0")
-                        url.set("https://raw.githubusercontent.com/Cat7373/mybatis-pager-spring-boot-starter/master/LICENSE")
+                        url.set("https://raw.githubusercontent.com/Cat7373/mybatis-pager/master/LICENSE")
                     }
                 }
 
