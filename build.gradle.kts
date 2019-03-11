@@ -29,7 +29,6 @@ val dependencyNames = mapOf(
         "pagehelper-spring-boot-starter"      to "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion",
         "mysql-connector-java"                to "mysql:mysql-connector-java",
         "poi"                                 to "org.apache.poi:poi:$poiVersion",
-        "poi-ooxml"                           to "org.apache.poi:poi-ooxml:$poiVersion",
         "junit-jupiter-api"                   to "org.junit.jupiter:junit-jupiter-api",
         "junit-jupiter-engine"                to "org.junit.jupiter:junit-jupiter-engine"
 )
@@ -76,12 +75,11 @@ dependencies {
     api                     ("${dependencyNames["spring-boot-starter-aop"]}")
     api                     ("${dependencyNames["spring-boot-starter-jdbc"]}")
     api                     ("${dependencyNames["spring-boot-starter-web"]}") {
-        exclude("org.springframework.boot", "spring-boot-starter-tomcat")
+                     exclude("org.springframework.boot", "spring-boot-starter-tomcat")
     }
     compileOnly             ("${dependencyNames["spring-boot-starter-undertow"]}")
     api                     ("${dependencyNames["pagehelper-spring-boot-starter"]}")
     api                     ("${dependencyNames["poi"]}")
-    api                     ("${dependencyNames["poi-ooxml"]}")
     annotationProcessor     ("${dependencyNames["spring-boot-configuration-processor"]}")
     compileOnly             ("${dependencyNames["spring-boot-configuration-processor"]}")
 
