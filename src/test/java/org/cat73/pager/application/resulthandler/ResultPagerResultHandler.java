@@ -13,11 +13,6 @@ import java.util.Collection;
 @Component
 public class ResultPagerResultHandler implements IPagerResultHandler<Result<Object>> {
     @Override
-    public boolean support(Result<Object> result) {
-        return result.getData() instanceof Collection;
-    }
-
-    @Override
     public Collection<?> getData(Result<Object> result) {
         return (Collection<?>) result.getData();
     }

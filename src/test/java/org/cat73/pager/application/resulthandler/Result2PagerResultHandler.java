@@ -11,11 +11,6 @@ import java.util.Collection;
  */
 public class Result2PagerResultHandler implements IPagerResultHandler<Result2<Object>> {
     @Override
-    public boolean support(Result2<Object> result) {
-        return result.getData() instanceof Collection;
-    }
-
-    @Override
     public Collection<?> getData(Result2<Object> result) {
         return (Collection<?>) result.getData();
     }

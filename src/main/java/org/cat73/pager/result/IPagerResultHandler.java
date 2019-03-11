@@ -23,11 +23,15 @@ public interface IPagerResultHandler<T> {
 
     /**
      * 判断是否支持这个返回值
+     * <p>默认情况下，只要泛型能接收的返回值，就默认支持</p>
+     * <p>如果有更复杂的条件，请覆盖这个方法，并实现自己的判断逻辑</p>
      * @param result 返回值
      * @return 是否支持
      * @throws Exception 如果抛出任何异常，均视为不支持这个返回值
      */
-    boolean support(T result) throws Exception;
+    default boolean support(T result) throws Exception {
+        return true;
+    }
 
     /**
      * 从返回值中取出分页查询结果
