@@ -23,7 +23,7 @@
 
 ## 环境要求
 * `Java8`及以上
-* `SpringBoot2.x` + 基于`Servlet`的`Web`支持
+* `SpringBoot1.2`及以上 + 基于`Servlet`的`Web`支持
 * `Mybatis 3.x`
 
 ## 使用文档
@@ -82,3 +82,6 @@ gpg --verify 文件名.asc 文件名
 * [Mybatis](https://github.com/mybatis/mybatis-3)
 * [Mybatis-PageHelper](https://github.com/pagehelper/Mybatis-PageHelper)
 * [Spring-Boot](https://github.com/spring-projects/spring-boot)
+
+## TODO
+* 支持`Spring4.1`及以上的版本

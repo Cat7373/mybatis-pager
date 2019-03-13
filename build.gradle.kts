@@ -1,31 +1,28 @@
-import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
-import io.spring.gradle.dependencymanagement.dsl.ImportsHandler
-
 // 插件
 plugins {
     `java-library`
     signing
     `maven-publish`
-    id("org.springframework.boot") version "2.1.3.RELEASE" apply false
 }
 apply(plugin = "org.gradle.java-library")
 apply(plugin = "org.gradle.signing")
 apply(plugin = "org.gradle.maven-publish")
-apply(plugin = "io.spring.dependency-management")
 
 group = "org.cat73"
 version = "1.0.1-SNAPSHOT"
 
 // 依赖版本控制
+val springBootVersion  = "2.1.3.RELEASE"
 val pagehelperVersion  = "1.2.10"
 val poiVersion         = "4.0.1"
 val jsr305Version      = "3.0.2"
 val dependencyNames = mapOf(
+        "spring-boot-starter-dependencies"    to "org.springframework.boot:spring-boot-dependencies:$springBootVersion",
         "spring-boot-starter-aop"             to "org.springframework.boot:spring-boot-starter-aop",
         "spring-boot-starter-jdbc"            to "org.springframework.boot:spring-boot-starter-jdbc",
         "spring-boot-starter-web"             to "org.springframework.boot:spring-boot-starter-web",
         "spring-boot-starter-undertow"        to "org.springframework.boot:spring-boot-starter-undertow",
-        "spring-boot-configuration-processor" to "org.springframework.boot:spring-boot-configuration-processor",
+        "spring-boot-configuration-processor" to "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion",
         "spring-boot-starter-test"            to "org.springframework.boot:spring-boot-starter-test",
         "jsr305"                              to "com.google.code.findbugs:jsr305:$jsr305Version",
         "pagehelper-spring-boot-starter"      to "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion",
@@ -39,13 +36,6 @@ val dependencyNames = mapOf(
 extra["signing.keyId"] = System.getProperty("gpg.keyId")
 extra["signing.password"] = System.getProperty("gpg.password")
 extra["signing.secretKeyRingFile"] = System.getProperty("gpg.secretKeyRingFile")
-
-// Spring 依赖管理
-configure<DependencyManagementExtension> {
-    imports(delegateClosureOf<ImportsHandler> {
-        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
-    })
-}
 
 // Java 版本
 configure<JavaPluginConvention> {
@@ -74,6 +64,7 @@ repositories {
 
 // 公共依赖
 dependencies {
+    implementation          (enforcedPlatform("${dependencyNames["spring-boot-starter-dependencies"]}"))
     api                     ("${dependencyNames["spring-boot-starter-aop"]}")
     api                     ("${dependencyNames["spring-boot-starter-jdbc"]}")
     api                     ("${dependencyNames["spring-boot-starter-web"]}") {

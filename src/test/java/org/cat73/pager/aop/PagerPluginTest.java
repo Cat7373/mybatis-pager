@@ -159,8 +159,8 @@ class PagerPluginTest extends SpringBootTestBase {
             while (rowIterator.hasNext()) {
                 row = rowIterator.next();
 
-                Assertions.assertEquals(i, row.getCell(0).getNumericCellValue());
-                Assertions.assertEquals(n, row.getCell(1).getNumericCellValue());
+                Assertions.assertEquals((double) i, row.getCell(0).getNumericCellValue());
+                Assertions.assertEquals((double) n, row.getCell(1).getNumericCellValue());
                 Assertions.assertEquals("node-" + n, row.getCell(2).getStringCellValue());
 
                 i++;
@@ -201,8 +201,8 @@ class PagerPluginTest extends SpringBootTestBase {
             while (rowIterator.hasNext()) {
                 row = rowIterator.next();
 
-                Assertions.assertEquals(i, row.getCell(0).getNumericCellValue());
-                Assertions.assertEquals(n, row.getCell(1).getNumericCellValue());
+                Assertions.assertEquals((double) i, row.getCell(0).getNumericCellValue());
+                Assertions.assertEquals((double) n, row.getCell(1).getNumericCellValue());
                 Assertions.assertEquals("node-" + n, row.getCell(2).getStringCellValue());
 
                 i++;
