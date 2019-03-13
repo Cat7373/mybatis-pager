@@ -2,6 +2,8 @@ package org.cat73.pager.result;
 
 import org.cat73.pager.bean.PageBody;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -11,18 +13,19 @@ import java.util.Map;
  */
 public final class MapResultHandler implements IPagerResultHandler<Map<String, Object>> {
     @Override
-    public boolean support(Map<String, Object> result) {
+    public boolean support(@Nonnull Map<String, Object> result) {
         Object data = result.get("data");
         return data instanceof Collection;
     }
 
     @Override
-    public Collection<?> getData(Map<String, Object> result) {
+    @Nullable
+    public Collection<?> getData(@Nonnull Map<String, Object> result) {
         return ((Collection<?>) result.get("data"));
     }
 
     @Override
-    public void setData(Map<String, Object> result, PageBody<?> pageBody) {
+    public void setData(@Nonnull Map<String, Object> result, @Nonnull PageBody<?> pageBody) {
         result.put("data", pageBody);
     }
 }

@@ -4,7 +4,9 @@ import java.util.function.Supplier;
 
 /**
  * 一些异常相关的工具类
+ * @deprecated 考虑移除
  */
+@Deprecated
 public final class Lang {
     private Lang() {
         throw new UnsupportedOperationException();

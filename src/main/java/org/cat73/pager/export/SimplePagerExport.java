@@ -7,6 +7,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.cat73.pager.util.Times;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,7 +18,8 @@ import java.util.Optional;
 
 public abstract class SimplePagerExport<T> implements IPagerExport<T> {
     @Override
-    public Workbook toWorkBook(List<T> records) {
+    @Nonnull
+    public Workbook toWorkBook(@Nonnull List<T> records) {
         // 创建工作簿
         Workbook workbook = new HSSFWorkbook();
         // 创建表
@@ -30,12 +33,10 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
                 this.fillRow(sheet.createRow(rownum[0]++), columns));
 
         // 输出每一行
-        if (records != null) {
-            int recordNo = 1;
-            for (T record : records) {
-                Optional.ofNullable(this.row(record, recordNo++)).ifPresent(columns ->
-                        this.fillRow(sheet.createRow(rownum[0]++), columns));
-            }
+        int recordNo = 1;
+        for (T record : records) {
+            Optional.ofNullable(this.row(record, recordNo++)).ifPresent(columns ->
+                    this.fillRow(sheet.createRow(rownum[0]++), columns));
         }
 
         return workbook;
@@ -46,7 +47,7 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
      * @param row 被填充的行
      * @param columns 用于填充的数据列表，每个数据代表一列
      */
-    private void fillRow(Row row, List<?> columns) {
+    private void fillRow(@Nonnull Row row, @Nonnull List<?> columns) {
         int colnum = 0;
         for (Object column : columns) {
             this.setCellValue(column, row.createCell(colnum++));
@@ -54,7 +55,8 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
     }
 
     @Override
-    public String getFilename(String prefix) {
+    @Nonnull
+    public String getFilename(@Nonnull String prefix) {
         return String.format("%s%tF_%tT.xls", prefix, LocalDateTime.now(), LocalDateTime.now());
     }
 
@@ -72,7 +74,7 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
      * @param value 值
      * @param cell 单元格
      */
-    protected void setCellValue(Object value, Cell cell) {
+    protected void setCellValue(@Nullable Object value, @Nonnull Cell cell) {
         if (value == null) {
             cell.setCellValue("");
         } else if (value instanceof Date) {
@@ -96,6 +98,7 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
      *
      * @return 列标题列表
      */
+    @Nullable
     protected List<?> columns() {
         return null;
     }
@@ -104,9 +107,10 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
      * 给入一个对象转换为一行记录，列表中每个元素代表一列<br>
      * <p>如返回 null，则忽略该对象，不输出到表格中</p>
      *
-     * @param obj 被转换的对象
+     * @param obj 被转换的对象，如果原始数据中会存在 null，则这里也会将 null 如实的传递进去
      * @param idx 当前是第几条记录(从 1 开始)
      * @return 值列表
      */
-    protected abstract List<?> row(T obj, int idx);
+    @Nullable
+    protected abstract List<?> row(@Nullable T obj, int idx);
 }

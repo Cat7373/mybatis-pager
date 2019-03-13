@@ -16,9 +16,10 @@ import org.cat73.pager.util.ServletBox;
 import org.cat73.pager.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,7 +27,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 分页插件
@@ -44,7 +47,7 @@ public class PagerPlugin {
      * @param pagerConfigure 分页参数
      */
     @Autowired
-    public PagerPlugin(PagerConfigure pagerConfigure) {
+    public PagerPlugin(@Nonnull PagerConfigure pagerConfigure) {
         this.pagerConfigure = pagerConfigure;
     }
 
@@ -57,8 +60,9 @@ public class PagerPlugin {
      * @throws Throwable 如果 AOP 切入点抛出了异常
      */
     @SuppressWarnings("unchecked")
+    @Nullable
     @Around("@annotation(pager)")
-    public Object aroundHandler(@NonNull ProceedingJoinPoint joinPoint, @NonNull Pager pager) throws Throwable {
+    public Object aroundHandler(@Nonnull ProceedingJoinPoint joinPoint, @Nonnull Pager pager) throws Throwable {
         boolean export = this.prePager(pager);
 
         // 分页对象
@@ -70,13 +74,10 @@ public class PagerPlugin {
         // 清理分页
         PageHelper.clearPage();
 
-        // 如果返回了 null，则应遵循接口的响应，不应做包装处理
-        if (!export && resultObject == null) {
-            return null;
-        }
-
-        // 读取结果中的数据
-        List<?> data = PagerResults.getData(resultObject);
+        // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
+        List<?> data = Optional.ofNullable(resultObject)
+                .map(PagerResults::getData)
+                .orElse(Collections.emptyList());
 
         // 根据是否为导出模式选择行为
         if (export) {
@@ -108,7 +109,7 @@ public class PagerPlugin {
      * @param pager 分页注解对象
      * @return 是否启用导出模式
      */
-    private boolean prePager(@NonNull Pager pager) {
+    private boolean prePager(@Nonnull Pager pager) {
         // 确保之前的分页设置被清理掉
         PageHelper.clearPage();
 
@@ -137,20 +138,22 @@ public class PagerPlugin {
         }
 
         // 从请求中获取 page 参数
+        int page;
         String pageString = PagerPlugin.tryGetParam(request, this.pagerConfigure.getPrefix() + "page", "1");
         if (Strings.isBlank(pageString)) {
-            pageString = "1";
+            page = 1; // 未传默认为第一页
+        } else {
+            page = Integer.parseInt(pageString);
         }
 
         // 从请求中读取每页的结果数
+        int pageSize;
         String pageSizeString = PagerPlugin.tryGetParam(request, this.pagerConfigure.getPrefix() + "pageSize");
         if (Strings.isBlank(pageSizeString)) {
-            pageSizeString = String.valueOf(pager.df());
+            pageSize = pager.df(); // 未传默认用注解中的默认值作为每页的记录数
+        } else {
+            pageSize = Integer.parseInt(pageSizeString);
         }
-
-        // 将两个值转为 int
-        int page = Integer.valueOf(pageString);
-        int pageSize = Integer.valueOf(pageSizeString);
 
         // 限制每页结果数的最大最小值
         pageSize = Math.min(Math.max(pageSize, pager.min()), pager.max());
@@ -169,7 +172,8 @@ public class PagerPlugin {
      * @param name 参数名
      * @return 获取到的参数值，如没获取到，则返回 null
      */
-    private static String tryGetParam(@NonNull HttpServletRequest request, @NonNull String name) {
+    @Nullable
+    private static String tryGetParam(@Nonnull HttpServletRequest request, @Nonnull String name) {
         return PagerPlugin.tryGetParam(request, name, null);
     }
 
@@ -181,7 +185,8 @@ public class PagerPlugin {
      * @param df 没获取到时的默认值
      * @return 获取到的参数值，如没获取到，则返回 df 参数传入的内容
      */
-    private static String tryGetParam(@NonNull HttpServletRequest request, @NonNull String name, String df) {
+    @Nullable
+    private static String tryGetParam(@Nonnull HttpServletRequest request, @Nonnull String name, @Nullable String df) {
         String result = request.getParameter(name);
         if (result != null) {
             return result;
@@ -200,7 +205,7 @@ public class PagerPlugin {
      * @param clazz 被判断的类
      * @return 是否存在 public 的无参构造方法
      */
-    private static boolean existPublicNoArgConstructor(@NonNull Class<?> clazz) {
+    private static boolean existPublicNoArgConstructor(@Nonnull Class<?> clazz) {
         Constructor<?>[] constructors = clazz.getConstructors();
         for (Constructor<?> constructor : constructors) {
             if (constructor.getParameterCount() == 0) {
@@ -215,7 +220,7 @@ public class PagerPlugin {
      * @param data 被输出的记录
      * @param pager 分页注解(用于获取导出配置)
      */
-    private void export(List<?> data, Pager pager) {
+    private void export(@Nonnull List<?> data, @Nonnull Pager pager) {
         try {
             // 实例化导出对象
             IPagerExport<Object> export = this.newInstance(pager.export());
@@ -249,7 +254,8 @@ public class PagerPlugin {
      * @throws InstantiationException 如果这个类是一个抽象类
      */
     @SuppressWarnings("unchecked")
-    private <T> T newInstance(@NonNull Class<?> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    @Nonnull
+    private <T> T newInstance(@Nonnull Class<?> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         return (T) clazz.getConstructor().newInstance();
     }
 }

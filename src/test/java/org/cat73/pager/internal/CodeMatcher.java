@@ -3,12 +3,14 @@ package org.cat73.pager.internal;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
+import javax.annotation.Nonnull;
+
 /**
  * code >= 0 的判断类
  */
 public class CodeMatcher extends BaseMatcher<Object> {
     @Override
-    public boolean matches(Object item) {
+    public boolean matches(@Nonnull Object item) {
         if (item instanceof Number) {
             return ((Number) item).longValue() >= 0L;
         }

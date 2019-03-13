@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -119,7 +120,8 @@ class PagerPluginTest extends SpringBootTestBase {
         }
     }
 
-    private MvcResult download(String url, Consumer<MockHttpServletRequestBuilder> custom) throws Exception {
+    @Nonnull
+    private MvcResult download(@Nonnull String url, @Nonnull Consumer<MockHttpServletRequestBuilder> custom) throws Exception {
         // 下载文件
         MockHttpServletRequestBuilder builder = get(url);
         custom.accept(builder);

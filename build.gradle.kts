@@ -19,6 +19,7 @@ version = "1.0.1-SNAPSHOT"
 // 依赖版本控制
 val pagehelperVersion  = "1.2.10"
 val poiVersion         = "4.0.1"
+val jsr305Version      = "3.0.2"
 val dependencyNames = mapOf(
         "spring-boot-starter-aop"             to "org.springframework.boot:spring-boot-starter-aop",
         "spring-boot-starter-jdbc"            to "org.springframework.boot:spring-boot-starter-jdbc",
@@ -26,6 +27,7 @@ val dependencyNames = mapOf(
         "spring-boot-starter-undertow"        to "org.springframework.boot:spring-boot-starter-undertow",
         "spring-boot-configuration-processor" to "org.springframework.boot:spring-boot-configuration-processor",
         "spring-boot-starter-test"            to "org.springframework.boot:spring-boot-starter-test",
+        "jsr305"                              to "com.google.code.findbugs:jsr305:$jsr305Version",
         "pagehelper-spring-boot-starter"      to "com.github.pagehelper:pagehelper-spring-boot-starter:$pagehelperVersion",
         "mysql-connector-java"                to "mysql:mysql-connector-java",
         "poi"                                 to "org.apache.poi:poi:$poiVersion",
@@ -80,6 +82,7 @@ dependencies {
     compileOnly             ("${dependencyNames["spring-boot-starter-undertow"]}")
     api                     ("${dependencyNames["pagehelper-spring-boot-starter"]}")
     api                     ("${dependencyNames["poi"]}")
+    api                     ("${dependencyNames["jsr305"]}")
     annotationProcessor     ("${dependencyNames["spring-boot-configuration-processor"]}")
     compileOnly             ("${dependencyNames["spring-boot-configuration-processor"]}")
 

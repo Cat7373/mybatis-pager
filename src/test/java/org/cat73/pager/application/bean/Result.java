@@ -1,5 +1,7 @@
 package org.cat73.pager.application.bean;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
@@ -29,24 +31,26 @@ public class Result<T> {
         this.code = code;
     }
 
+    @Nullable
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(@Nullable String message) {
         this.message = message;
     }
 
+    @Nullable
     public T getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(@Nullable T data) {
         this.data = data;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         Result<?> result = (Result<?>) o;
@@ -61,6 +65,7 @@ public class Result<T> {
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "Result{" +
                 "code=" + code +

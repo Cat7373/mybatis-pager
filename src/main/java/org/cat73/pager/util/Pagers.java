@@ -3,8 +3,9 @@ package org.cat73.pager.util;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.page.PageMethod;
-import org.springframework.lang.NonNull;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 /**
@@ -21,7 +22,8 @@ public class Pagers {
      * @param <R> query 的返回值的数据类型
      * @return query 的返回值
      */
-    public static <R> R skipPager(@NonNull Supplier<R> query) {
+    @Nullable
+    public static <R> R skipPager(@Nonnull Supplier<R> query) {
         // 获取当前的分页设置并清除当前的分页设置
         Page<?> page = PageHelper.getLocalPage();
         PageHelper.clearPage();
@@ -46,7 +48,7 @@ public class Pagers {
          * 设置分页
          * @param page 分页设置
          */
-        private static void internalSetLocalPage(Page<?> page) {
+        private static void internalSetLocalPage(@Nonnull Page<?> page) {
             PageMethod.setLocalPage(page);
         }
     }

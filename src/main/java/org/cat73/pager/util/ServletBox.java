@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet 工具类，只能在请求上下文中使用
  * <p><em>内部使用，不保证未来依旧存在，不建议外部使用</em></p>
+ * @deprecated 考虑移除
  */
+@Deprecated
 public final class ServletBox {
     private ServletBox() {
         throw new UnsupportedOperationException();

@@ -2,6 +2,8 @@ package org.cat73.pager.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
@@ -18,6 +20,7 @@ public class PagerConfigure {
      * 获取分页参数的前缀
      * @return 分页参数的前缀
      */
+    @Nonnull
     public String getPrefix() {
         return prefix;
     }
@@ -26,12 +29,12 @@ public class PagerConfigure {
      * 设置分页参数的前缀
      * @param prefix 新的分页参数的前缀
      */
-    public void setPrefix(String prefix) {
+    public void setPrefix(@Nonnull String prefix) {
         this.prefix = prefix;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         PagerConfigure that = (PagerConfigure) o;
@@ -44,9 +47,10 @@ public class PagerConfigure {
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "PagerConfigure{" +
-                "prefix='" + prefix + '\'' +
+                "prefix='" + this.prefix + '\'' +
                 '}';
     }
 }

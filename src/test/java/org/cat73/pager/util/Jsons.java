@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Json 工具类
+ * @deprecated 考虑移除
  */
+@Deprecated
 public final class Jsons {
     private Jsons() {
         throw new UnsupportedOperationException();

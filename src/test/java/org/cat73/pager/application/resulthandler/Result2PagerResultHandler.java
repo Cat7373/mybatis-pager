@@ -4,6 +4,8 @@ import org.cat73.pager.application.bean.Result2;
 import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.result.IPagerResultHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 
 /**
@@ -11,12 +13,13 @@ import java.util.Collection;
  */
 public class Result2PagerResultHandler implements IPagerResultHandler<Result2<Object>> {
     @Override
-    public Collection<?> getData(Result2<Object> result) {
+    @Nullable
+    public Collection<?> getData(@Nonnull Result2<Object> result) {
         return (Collection<?>) result.getData();
     }
 
     @Override
-    public void setData(Result2<Object> result, PageBody<?> pageBody) {
+    public void setData(@Nonnull Result2<Object> result, @Nonnull PageBody<?> pageBody) {
         result.setData(pageBody);
     }
 }

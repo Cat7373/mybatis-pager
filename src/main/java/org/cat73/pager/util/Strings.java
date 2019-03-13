@@ -3,7 +3,9 @@ package org.cat73.pager.util;
 /**
  * 字符串工具类
  * <p><em>内部使用，不保证未来依旧存在，不建议外部使用</em></p>
+ * @deprecated 考虑移除
  */
+@Deprecated
 public final class Strings {
     private Strings() {
         throw new UnsupportedOperationException();

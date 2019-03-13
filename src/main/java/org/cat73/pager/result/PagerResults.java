@@ -3,6 +3,8 @@ package org.cat73.pager.result;
 import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.exception.PagerException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -28,11 +30,7 @@ public final class PagerResults {
      * 注册一个返回值处理器，越晚注册的处理器会越优先被使用
      * @param handler 被注册的处理器
      */
-    public static void registerHandler(IPagerResultHandler<?> handler) {
-        if (handler == null) {
-            throw new NullPointerException("handler");
-        }
-
+    public static void registerHandler(@Nonnull IPagerResultHandler<?> handler) {
         // 强转成 Object 泛型
         IPagerResultHandler<Object> typeSafeHandler = PagerResults.typeSafeHandler(handler);
 
@@ -51,7 +49,8 @@ public final class PagerResults {
      * @return Object 泛型的返回值处理器
      */
     @SuppressWarnings("unchecked")
-    private static IPagerResultHandler<Object> typeSafeHandler(IPagerResultHandler<?> handler) {
+    @Nonnull
+    private static IPagerResultHandler<Object> typeSafeHandler(@Nonnull IPagerResultHandler<?> handler) {
         return (IPagerResultHandler<Object>) handler;
     }
 
@@ -61,7 +60,7 @@ public final class PagerResults {
      * @param result 返回值
      * @return 是否支持
      */
-    private static boolean isSupport(IPagerResultHandler<Object> handler, Object result) {
+    private static boolean isSupport(@Nonnull IPagerResultHandler<Object> handler, @Nonnull Object result) {
         // 从返回值处理器中寻找 IPagerResultHandler 接口上的泛型参数
         Class<?> clazz = handler.getClass();
         out: while (true) {
@@ -102,8 +101,10 @@ public final class PagerResults {
      * 寻找支持这个返回值的处理器
      * @param result 返回值
      * @return 找到的处理器
+     * @throws PagerException 如果未找到支持的 Handler
      */
-    private static IPagerResultHandler<Object> findSupportHandler(Object result) {
+    @Nonnull
+    private static IPagerResultHandler<Object> findSupportHandler(@Nonnull Object result) {
         Class<?> resultClazz = result.getClass();
 
         // 尝试搜索缓存
@@ -141,7 +142,8 @@ public final class PagerResults {
      * @param result 返回值
      * @return 获取到的分页数据
      */
-    public static List<?> getData(Object result) {
+    @Nullable
+    public static List<?> getData(@Nonnull Object result) {
         Collection<?> collection;
         try {
             collection = PagerResults.findSupportHandler(result)
@@ -152,8 +154,10 @@ public final class PagerResults {
 
         if (collection instanceof List) {
             return (List<?>) collection;
-        } else {
+        } else if (collection != null) {
             return new ArrayList<>(collection);
+        } else {
+            return null;
         }
     }
 
@@ -162,7 +166,7 @@ public final class PagerResults {
      * @param result 返回值
      * @param pageBody 分页结果
      */
-    public static void setData(Object result, PageBody<?> pageBody) {
+    public static void setData(@Nonnull Object result, @Nonnull PageBody<?> pageBody) {
         try {
             PagerResults.findSupportHandler(result)
                     .setData(result, pageBody);

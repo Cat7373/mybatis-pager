@@ -2,6 +2,8 @@ package org.cat73.pager.result;
 
 import org.cat73.pager.bean.PageBody;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 
 /**
@@ -29,7 +31,7 @@ public interface IPagerResultHandler<T> {
      * @return 是否支持
      * @throws Exception 如果抛出任何异常，均视为不支持这个返回值
      */
-    default boolean support(T result) throws Exception {
+    default boolean support(@Nonnull T result) throws Exception {
         return true;
     }
 
@@ -39,7 +41,8 @@ public interface IPagerResultHandler<T> {
      * @return 取到的结果，不允许返回 null，至少要返回空集合
      * @throws Exception 如果抛出任何异常，均视为处理失败
      */
-    Collection<?> getData(T result) throws Exception;
+    @Nullable
+    Collection<?> getData(@Nonnull T result) throws Exception;
 
     /**
      * 将分页结果存储进返回值
@@ -47,5 +50,5 @@ public interface IPagerResultHandler<T> {
      * @param pageBody 分页结果
      * @throws Exception 如果抛出任何异常，均视为处理失败
      */
-    void setData(T result, PageBody<?> pageBody) throws Exception;
+    void setData(@Nonnull T result, @Nonnull PageBody<?> pageBody) throws Exception;
 }

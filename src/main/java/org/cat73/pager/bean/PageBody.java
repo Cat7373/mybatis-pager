@@ -1,5 +1,7 @@
 package org.cat73.pager.bean;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +31,7 @@ public final class PageBody<T> {
      * 获取实际的数据列表
      * @return 实际的数据列表
      */
+    @Nonnull
     public List<T> getListData() {
         return listData;
     }
@@ -38,7 +41,8 @@ public final class PageBody<T> {
      * @param listData 新的数据列表
      * @return 自身实例，方便链式调用
      */
-    public PageBody<T> setListData(List<T> listData) {
+    @Nonnull
+    public PageBody<T> setListData(@Nonnull List<T> listData) {
         this.listData = listData;
         return this;
     }
@@ -56,6 +60,7 @@ public final class PageBody<T> {
      * @param page 第几页
      * @return 自身实例，方便链式调用
      */
+    @Nonnull
     public PageBody<T> setPage(long page) {
         this.page = page;
         return this;
@@ -74,6 +79,7 @@ public final class PageBody<T> {
      * @param totalRow 总记录数
      * @return 自身实例，方便链式调用
      */
+    @Nonnull
     public PageBody<T> setTotalRow(long totalRow) {
         this.totalRow = totalRow;
         return this;
@@ -92,13 +98,14 @@ public final class PageBody<T> {
      * @param totalPage 总页数
      * @return 自身实例，方便链式调用
      */
+    @Nonnull
     public PageBody<T> setTotalPage(long totalPage) {
         this.totalPage = totalPage;
         return this;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
         PageBody<?> pageBody = (PageBody<?>) o;
@@ -114,6 +121,7 @@ public final class PageBody<T> {
     }
 
     @Override
+    @Nonnull
     public String toString() {
         return "PageBody{" +
                 "listData=" + listData +

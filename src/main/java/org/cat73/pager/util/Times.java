@@ -10,7 +10,9 @@ import java.util.Date;
 /**
  * 时间处理工具类
  * <p><em>内部使用，不保证未来依旧存在，不建议外部使用</em></p>
+ * @deprecated 考虑移除
  */
+@Deprecated
 public final class Times {
     private Times() {
         throw new UnsupportedOperationException();

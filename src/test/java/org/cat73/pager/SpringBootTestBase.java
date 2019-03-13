@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.lang.NonNull;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -20,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.function.Function;
 
@@ -49,7 +49,7 @@ public abstract class SpringBootTestBase {
     /**
      * 获取原始的 Mock 对象，当糖方法无法满足测试需求时可以直接调用这个
      */
-    @NonNull
+    @Nonnull
     protected MockMvc mock() {
         return this.mockMvc;
     }
@@ -63,8 +63,8 @@ public abstract class SpringBootTestBase {
      * @param paramsFunction 提供请求参数的接口
      * @return 接口调用的返回值
      */
-    @NonNull
-    protected MvcResult getMock(@NonNull String url, @NonNull Function<GetParamBuilder, GetParamBuilder> paramsFunction) {
+    @Nonnull
+    protected MvcResult getMock(@Nonnull String url, @Nonnull Function<GetParamBuilder, GetParamBuilder> paramsFunction) {
         try {
             MockHttpServletRequestBuilder builder = get(url);
             paramsFunction.apply(new GetParamBuilder(builder));
@@ -90,8 +90,8 @@ public abstract class SpringBootTestBase {
      * @param url 调用的 URL
      * @return 接口调用的返回值
      */
-    @NonNull
-    protected MvcResult getMock(@NonNull String url) {
+    @Nonnull
+    protected MvcResult getMock(@Nonnull String url) {
         return this.getMock(url, b -> b);
     }
 
@@ -103,7 +103,7 @@ public abstract class SpringBootTestBase {
      * @param clazz 要转换为的类型
      * @return 转换的结果
      */
-    protected <T> T mockResult(@NonNull MvcResult result, @NonNull Class<? extends T> clazz) {
+    protected <T> T mockResult(@Nonnull MvcResult result, @Nonnull Class<? extends T> clazz) {
         try {
             return Jsons.from(result.getResponse().getContentAsString(), clazz);
         } catch (IOException e) {
@@ -117,7 +117,7 @@ public abstract class SpringBootTestBase {
      * @param type 要转换为的类型
      * @return 转换的结果
      */
-    protected <T> T mockResult(@NonNull MvcResult result, @NonNull TypeReference<? extends T> type) {
+    protected <T> T mockResult(@Nonnull MvcResult result, @Nonnull TypeReference<? extends T> type) {
         try {
             return Jsons.from(result.getResponse().getContentAsString(), type);
         } catch (IOException e) {
@@ -130,7 +130,7 @@ public abstract class SpringBootTestBase {
     /**
      * getMock -> mockResult
      */
-    protected <T> T getMockAndResult(@NonNull String url, @NonNull Function<GetParamBuilder, GetParamBuilder> paramsFunction, @NonNull Class<? extends T> clazz) {
+    protected <T> T getMockAndResult(@Nonnull String url, @Nonnull Function<GetParamBuilder, GetParamBuilder> paramsFunction, @Nonnull Class<? extends T> clazz) {
         try {
             return Jsons.from(this.getMock(url, paramsFunction).getResponse().getContentAsString(), clazz);
         } catch (IOException e) {
@@ -141,7 +141,7 @@ public abstract class SpringBootTestBase {
     /**
      * getMock -> mockResult
      */
-    protected <T> T getMockAndResult(@NonNull String url, @NonNull Function<GetParamBuilder, GetParamBuilder> paramsFunction, @NonNull TypeReference<? extends T> type) {
+    protected <T> T getMockAndResult(@Nonnull String url, @Nonnull Function<GetParamBuilder, GetParamBuilder> paramsFunction, @Nonnull TypeReference<? extends T> type) {
         try {
             return Jsons.from(this.getMock(url, paramsFunction).getResponse().getContentAsString(), type);
         } catch (IOException e) {
@@ -152,7 +152,7 @@ public abstract class SpringBootTestBase {
     /**
      * getMock -> mockResult
      */
-    protected <T> T getMockAndResult(@NonNull String url, @NonNull Class<? extends T> clazz) {
+    protected <T> T getMockAndResult(@Nonnull String url, @Nonnull Class<? extends T> clazz) {
         try {
             return Jsons.from(this.getMock(url).getResponse().getContentAsString(), clazz);
         } catch (IOException e) {
@@ -163,7 +163,7 @@ public abstract class SpringBootTestBase {
     /**
      * getMock -> mockResult
      */
-    protected <T> T getMockAndResult(@NonNull String url, @NonNull TypeReference<? extends T> type) {
+    protected <T> T getMockAndResult(@Nonnull String url, @Nonnull TypeReference<? extends T> type) {
         try {
             return Jsons.from(this.getMock(url).getResponse().getContentAsString(), type);
         } catch (IOException e) {

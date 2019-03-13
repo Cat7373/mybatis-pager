@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class PagerAutoConfigure {
      * @param handlerList 返回值处理器的列表
      */
     @Autowired
-    public void initialPagerResultHandlers(List<IPagerResultHandler<?>> handlerList) {
+    public void initialPagerResultHandlers(@Nonnull List<IPagerResultHandler<?>> handlerList) {
         // 内置的做第一个
         PagerResults.registerHandler(new MapResultHandler());
         // 扫描到的排序就不保证了，如有需要用户应手动调用注册方法，保证自己的在最前面

@@ -5,6 +5,8 @@ import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.result.IPagerResultHandler;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 
 /**
@@ -13,12 +15,13 @@ import java.util.Collection;
 @Component
 public class ResultPagerResultHandler implements IPagerResultHandler<Result<Object>> {
     @Override
-    public Collection<?> getData(Result<Object> result) {
+    @Nullable
+    public Collection<?> getData(@Nonnull Result<Object> result) {
         return (Collection<?>) result.getData();
     }
 
     @Override
-    public void setData(Result<Object> result, PageBody<?> pageBody) {
+    public void setData(@Nonnull Result<Object> result, @Nonnull PageBody<?> pageBody) {
         result.setData(pageBody);
     }
 }
