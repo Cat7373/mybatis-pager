@@ -27,6 +27,7 @@
 
 ## 使用文档
 1. [快速入门](docs/1.QuickStart.md)
+2. [更新历史](CHANGELOG.md)
 
 ## 开发者
 ### 构建说明
