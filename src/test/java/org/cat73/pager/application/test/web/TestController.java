@@ -24,7 +24,7 @@ public class TestController {
     private TestMapper testMapper;
 
     @Nullable
-    @Pager(export = TestExport.class, filenamePrefix = "test_")
+    @Pager(export = TestExport.class, filenamePrefix = "test_", exportColumns = { "idx", "id", "名称" })
     @GetMapping("/list")
     public Result<List<TestEntity>> list() {
         // 前面插一个查询
@@ -60,11 +60,6 @@ public class TestController {
     }
 
     public static class TestExport extends SimplePagerExport<TestEntity> {
-        @Override
-        public List<?> columns() {
-            return Arrays.asList("idx", "id", "名称");
-        }
-
         @Override
         public List<?> row(TestEntity obj, int idx) {
             return Arrays.asList(idx, obj.getId(), obj.getName());

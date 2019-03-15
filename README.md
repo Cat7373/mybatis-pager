@@ -1,5 +1,5 @@
 # mybatis-pager-spring-boot-starter
-为 SpringBoot(基于 Servlet 的 Web 项目) + Mybatis 提供简单易用的分页查询支持
+一个`@Pager`注解搞定你的分页需求～
 
 ![](https://img.shields.io/maven-central/v/org.cat73/mybatis-pager-spring-boot-starter.svg)
 ![](https://img.shields.io/github/license/Cat7373/mybatis-pager.svg)

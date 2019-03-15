@@ -12,11 +12,14 @@ import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class SimplePagerExport<T> implements IPagerExport<T> {
+    private List<String> columns;
+
     @Override
     @Nonnull
     public Workbook toWorkBook(@Nonnull List<T> records) {
@@ -55,9 +58,8 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
     }
 
     @Override
-    @Nonnull
-    public String getFilename(@Nonnull String prefix) {
-        return String.format("%s%tF_%tT.xls", prefix, LocalDateTime.now(), LocalDateTime.now());
+    public void setColumns(@Nonnull String[] columns) {
+        this.columns = columns.length == 0 ? null : Arrays.asList(columns);
     }
 
     /**
@@ -100,7 +102,7 @@ public abstract class SimplePagerExport<T> implements IPagerExport<T> {
      */
     @Nullable
     protected List<?> columns() {
-        return null;
+        return this.columns;
     }
 
     /**

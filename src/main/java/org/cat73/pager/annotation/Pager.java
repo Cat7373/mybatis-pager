@@ -61,4 +61,13 @@ public @interface Pager {
      * @return 导出的文件的文件名前缀
      */
     String filenamePrefix() default "";
+
+    /**
+     * 导出的 Excel 的列标题列表
+     * <p>默认情况下，SimplePagerExport 会使用这个参数作为 Excel 的第一行的内容，每个元素为一列</p>
+     * <p>如保持默认值，则会视为没有列标题</p>
+     * <p>如使用自己实现的导出类，可自行决定是否参考这个字段</p>
+     * @return 导出的 Excel 的列标题列表
+     */
+    String[] exportColumns() default {};
 }

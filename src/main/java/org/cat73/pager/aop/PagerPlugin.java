@@ -235,6 +235,7 @@ public class PagerPlugin {
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
 
             // 生成并输出 Excel 文件
+            export.setColumns(pager.exportColumns());
             @SuppressWarnings("unchecked")
             Workbook workbook = export.toWorkBook((List<Object>) data);
             workbook.write(response.getOutputStream());
