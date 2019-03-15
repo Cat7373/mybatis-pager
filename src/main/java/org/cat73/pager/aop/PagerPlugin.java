@@ -74,16 +74,26 @@ public class PagerPlugin {
         // 清理分页
         PageHelper.clearPage();
 
-        // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
-        List<?> data = Optional.ofNullable(resultObject)
-                .map(PagerResults::getData)
-                .orElse(Collections.emptyList());
-
         // 根据是否为导出模式选择行为
         if (export) {
+            // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
+            List<?> data = Optional.ofNullable(resultObject)
+                    .map(PagerResults::getData)
+                    .orElse(Collections.emptyList());
+
+            // 导出为 Excel
             this.export(data, pager);
             return null;
         } else {
+            // 如果原接口返回 null，那应该尊重原接口的行为，也返回 null
+            if (resultObject == null) {
+                return null;
+            }
+
+            // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
+            List<?> data = Optional.ofNullable(PagerResults.getData(resultObject))
+                    .orElse(Collections.emptyList());
+
             // 当前页
             long currentPage = page.getPageNum();
             // 总记录数
