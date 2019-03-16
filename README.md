@@ -3,6 +3,8 @@
 
 ![](https://img.shields.io/maven-central/v/org.cat73/mybatis-pager-spring-boot-starter.svg)
 ![](https://img.shields.io/github/license/Cat7373/mybatis-pager.svg)
+[![](https://img.shields.io/badge/Repo-GitHub-blue.svg)](https://github.com/Cat7373/mybatis-pager)
+[![](https://img.shields.io/badge/Repo-Gitee-blue.svg)](https://gitee.com/cat73/mybatis-pager)
 
 ## 功能说明
 以前要做一个分页查询需要做的：
