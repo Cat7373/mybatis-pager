@@ -14,9 +14,7 @@ import org.cat73.pager.export.IPagerExport;
 import org.cat73.pager.result.PagerResults;
 import org.cat73.pager.util.ServletBox;
 import org.cat73.pager.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,19 +32,17 @@ import java.util.Optional;
 /**
  * 分页插件
  */
-@Component
 @Aspect
 public class PagerPlugin {
     /**
-     * 分页参数
+     * 分页配置
      */
     private final PagerConfigure pagerConfigure;
 
     /**
      * 实例化一个分页插件
-     * @param pagerConfigure 分页参数
+     * @param pagerConfigure 分页配置
      */
-    @Autowired
     public PagerPlugin(@Nonnull PagerConfigure pagerConfigure) {
         this.pagerConfigure = pagerConfigure;
     }
