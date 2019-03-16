@@ -59,7 +59,6 @@ public class PagerPlugin {
      * @return 实际的 Handler 的返回值
      * @throws Throwable 如果 AOP 切入点抛出了异常
      */
-    @SuppressWarnings("unchecked")
     @Nullable
     @Around("@annotation(pager)")
     public Object aroundHandler(@Nonnull ProceedingJoinPoint joinPoint, @Nonnull Pager pager) throws Throwable {
@@ -102,8 +101,10 @@ public class PagerPlugin {
             long totalPage = page.getPages();
 
             // 修改结果中的数据
+            @SuppressWarnings("unchecked")
+            List<Object> data2 = (List<Object>) data;
             PagerResults.setData(resultObject, new PageBody<>()
-                    .setListData((List<Object>) data)
+                    .setListData(data2)
                     .setPage(currentPage)
                     .setTotalRow(totalRow)
                     .setTotalPage(totalPage)
@@ -247,7 +248,7 @@ public class PagerPlugin {
             // 生成并输出 Excel 文件
             export.setColumns(pager.exportColumns());
             @SuppressWarnings("unchecked")
-            Workbook workbook = export.toWorkBook((List<Object>) data);
+            Workbook workbook = export.toWorkBook((List) data);
             workbook.write(response.getOutputStream());
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException | IOException e) {
             throw new PagerException(e);
