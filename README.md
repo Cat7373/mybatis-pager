@@ -1,8 +1,8 @@
 # mybatis-pager-spring-boot-starter
 一个`@Pager`注解搞定你的分页需求～
 
-![](https://img.shields.io/maven-central/v/org.cat73/mybatis-pager-spring-boot-starter.svg)
-![](https://img.shields.io/github/license/Cat7373/mybatis-pager.svg)
+[![](https://img.shields.io/maven-central/v/org.cat73/mybatis-pager-spring-boot-starter.svg)](https://search.maven.org/search?q=g:org.cat73%20AND%20a:mybatis-pager-spring-boot-starter)
+[![](https://img.shields.io/github/license/Cat7373/mybatis-pager.svg)](LICENSE)
 [![](https://img.shields.io/badge/Repo-GitHub-blue.svg)](https://github.com/Cat7373/mybatis-pager)
 [![](https://img.shields.io/badge/Repo-Gitee-blue.svg)](https://gitee.com/cat73/mybatis-pager)
 
