@@ -37,40 +37,10 @@
 ./gradlew clean jar
 ```
 
-你会在`build/libs`里找到构建结果
-
-### 上传到 Maven 库
-```sh
-./gradlew clean jar test publish \
-    -Dnexus.username="<Nexus Username>" \
-    -Dnexus.password="<Nexus Password>" \
-    -Dgpg.keyId="<GPG Key Id>" \
-    -Dgpg.password="<GPG Password>" \
-    -Dgpg.secretKeyRingFile="<GPG Secret File Name>"
-
-# 可预先将用户名和密码放到环境变量中，免得每次都要输入
-./gradlew clean jar test publish \
-    -Dnexus.username="$nexusUsername" \
-    -Dnexus.password="$nexusPassword" \
-    -Dgpg.keyId="$gpgKeyId" \
-    -Dgpg.password="$gpgPassword" \
-    -Dgpg.secretKeyRingFile="$gpgSecretFileName"
-```
+之后你会在`build/libs`里找到构建结果
 
 ### 签名
-上传到`Maven`库的包使用`GPG`进行签名，公钥可在[这里](https://blog.cat73.org/about/gpg.html)获得
-
-验签方法：
-
-```sh
-# 首先请自行下载 GPG 公钥并保存到本地，本例中使用 public.gpg 来保存公钥
-
-# 导入 GPG 公钥
-gpg --import public.gpg
-
-# 验证签名
-gpg --verify 文件名.asc 文件名
-```
+上传到中央库的包使用`GPG`进行签名，公钥可在[这里](https://blog.cat73.org/about/gpg.html)获得
 
 ## FAQ
 * 为何没使用`Lombok`？
