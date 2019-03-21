@@ -58,56 +58,60 @@ public class PagerPlugin {
     @Nullable
     @Around("@annotation(pager)")
     public Object aroundHandler(@Nonnull ProceedingJoinPoint joinPoint, @Nonnull Pager pager) throws Throwable {
-        boolean export = this.prePager(pager);
+        try {
+            boolean export = this.prePager(pager);
 
-        // 分页对象
-        Page<?> page = PageHelper.getLocalPage();
+            // 分页对象
+            Page<?> page = PageHelper.getLocalPage();
 
-        // 调用目标方法
-        Object resultObject = joinPoint.proceed();
+            // 调用目标方法
+            Object resultObject = joinPoint.proceed();
 
-        // 清理分页
-        PageHelper.clearPage();
+            // 清理分页
+            PageHelper.clearPage();
 
-        // 根据是否为导出模式选择行为
-        if (export) {
-            // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
-            List<?> data = Optional.ofNullable(resultObject)
-                    .map(PagerResults::getData)
-                    .orElse(Collections.emptyList());
+            // 根据是否为导出模式选择行为
+            if (export) {
+                // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
+                List<?> data = Optional.ofNullable(resultObject)
+                        .map(PagerResults::getData)
+                        .orElse(Collections.emptyList());
 
-            // 导出为 Excel
-            this.export(data, pager);
-            return null;
-        } else {
-            // 如果原接口返回 null，那应该尊重原接口的行为，也返回 null
-            if (resultObject == null) {
+                // 导出为 Excel
+                this.export(data, pager);
                 return null;
+            } else {
+                // 如果原接口返回 null，那应该尊重原接口的行为，也返回 null
+                if (resultObject == null) {
+                    return null;
+                }
+
+                // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
+                List<?> data = Optional.ofNullable(PagerResults.getData(resultObject))
+                        .orElse(Collections.emptyList());
+
+                // 当前页
+                long currentPage = page.getPageNum();
+                // 总记录数
+                long totalRow = page.getTotal();
+                // 总页数
+                long totalPage = page.getPages();
+
+                // 修改结果中的数据
+                @SuppressWarnings("unchecked")
+                List<Object> data2 = (List<Object>) data;
+                PagerResults.setData(resultObject, new PageBody<>()
+                        .setListData(data2)
+                        .setPage(currentPage)
+                        .setTotalRow(totalRow)
+                        .setTotalPage(totalPage)
+                );
+
+                // 返回结果
+                return resultObject;
             }
-
-            // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
-            List<?> data = Optional.ofNullable(PagerResults.getData(resultObject))
-                    .orElse(Collections.emptyList());
-
-            // 当前页
-            long currentPage = page.getPageNum();
-            // 总记录数
-            long totalRow = page.getTotal();
-            // 总页数
-            long totalPage = page.getPages();
-
-            // 修改结果中的数据
-            @SuppressWarnings("unchecked")
-            List<Object> data2 = (List<Object>) data;
-            PagerResults.setData(resultObject, new PageBody<>()
-                    .setListData(data2)
-                    .setPage(currentPage)
-                    .setTotalRow(totalRow)
-                    .setTotalPage(totalPage)
-            );
-
-            // 返回结果
-            return resultObject;
+        } finally {
+            PageHelper.clearPage();
         }
     }
 
