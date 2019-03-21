@@ -13,8 +13,8 @@ import org.cat73.pager.exception.PagerException;
 import org.cat73.pager.export.IPagerExport;
 import org.cat73.pager.result.PagerResults;
 import org.cat73.pager.util.ServletBox;
-import org.cat73.pager.util.Strings;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -99,7 +99,6 @@ public class PagerPlugin {
                 long totalPage = page.getPages();
 
                 // 修改结果中的数据
-
                 PagerResults.setData(resultObject, new PageBody<>()
                         .setListData(data)
                         .setPage(currentPage)
@@ -151,7 +150,7 @@ public class PagerPlugin {
         // 从请求中获取 page 参数
         int page;
         String pageString = PagerPlugin.tryGetParam(request, this.pagerConfigure.getPrefix() + "page", "1");
-        if (Strings.isBlank(pageString)) {
+        if (StringUtils.isEmpty(pageString)) {
             page = 1; // 未传默认为第一页
         } else {
             page = Integer.parseInt(pageString);
@@ -160,7 +159,7 @@ public class PagerPlugin {
         // 从请求中读取每页的结果数
         int pageSize;
         String pageSizeString = PagerPlugin.tryGetParam(request, this.pagerConfigure.getPrefix() + "pageSize");
-        if (Strings.isBlank(pageSizeString)) {
+        if (StringUtils.isEmpty(pageSizeString)) {
             pageSize = pager.df(); // 未传默认用注解中的默认值作为每页的记录数
         } else {
             pageSize = Integer.parseInt(pageSizeString);

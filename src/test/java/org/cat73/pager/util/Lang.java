@@ -22,27 +22,4 @@ public final class Lang {
             return new RuntimeException(e);
         }
     }
-
-    /**
-     * 执行一段可能抛出异常代码，自动用 warpThrow 包装出现的异常
-     * @param s 被包装的会抛出异常的代码
-     * @param <T> 返回值参数的数据类型
-     * @return 返回的数据
-     */
-    public static <T> T wrapCode(ThrowableSupplier<T> s) {
-        try {
-            return s.get();
-        } catch (Exception e) {
-            throw Lang.wrapThrow(e);
-        }
-    }
-
-    /**
-     * 允许抛出异常的 Supplier
-     * @param <T> 返回值的数据类型
-     */
-    @FunctionalInterface
-    public interface ThrowableSupplier<T> {
-        T get() throws Exception;
-    }
 }

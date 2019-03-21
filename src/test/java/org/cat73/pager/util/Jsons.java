@@ -3,6 +3,8 @@ package org.cat73.pager.util;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+
 /**
  * Json 工具类
  * @deprecated 考虑移除
@@ -26,7 +28,11 @@ public final class Jsons {
      * @return 转换结果
      */
     public static <T> T from(String json, Class<? extends T> clazz) {
-        return Lang.wrapCode(() -> mapper.readValue(json, clazz));
+        try {
+            return mapper.readValue(json, clazz);
+        } catch (IOException e) {
+            throw Lang.wrapThrow(e);
+        }
     }
 
     /**
@@ -37,6 +43,10 @@ public final class Jsons {
      * @return 转换结果
      */
     public static <T> T from(String json, TypeReference<? extends T> type) {
-        return Lang.wrapCode(() -> mapper.readValue(json, type));
+        try {
+            return mapper.readValue(json, type);
+        } catch (IOException e) {
+            throw Lang.wrapThrow(e);
+        }
     }
 }
