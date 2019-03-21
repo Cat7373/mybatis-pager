@@ -87,7 +87,8 @@ public class PagerPlugin {
                 }
 
                 // 结果中的数据(如无返回值或获取到 null 的数据，则用空列表代替)
-                List<?> data = Optional.ofNullable(PagerResults.getData(resultObject))
+                @SuppressWarnings("unchecked")
+                List<Object> data = (List<Object>) Optional.ofNullable(PagerResults.getData(resultObject))
                         .orElse(Collections.emptyList());
 
                 // 当前页
@@ -98,10 +99,9 @@ public class PagerPlugin {
                 long totalPage = page.getPages();
 
                 // 修改结果中的数据
-                @SuppressWarnings("unchecked")
-                List<Object> data2 = (List<Object>) data;
+
                 PagerResults.setData(resultObject, new PageBody<>()
-                        .setListData(data2)
+                        .setListData(data)
                         .setPage(currentPage)
                         .setTotalRow(totalRow)
                         .setTotalPage(totalPage)
