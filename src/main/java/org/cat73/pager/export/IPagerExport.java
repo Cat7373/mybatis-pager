@@ -34,9 +34,9 @@ public interface IPagerExport<T> {
     // TODO 为保证向前兼容性而增加的方法
     //  下个大版本(2.x)去掉这个方法
     /**
-     * 设置列标题列表(@Pager 注解上的 exportColumns 字段)
+     * 设置列标题列表(<code>@Pager</code> 注解上的 exportColumns 字段)
      * <p>如果实现需要使用这个字段，可覆盖本方法</p>
-     * @param columns @Pager 注解上的 exportColumns 字段
+     * @param columns <code>@Pager</code> 注解上的 exportColumns 字段
      */
     default void setColumns(@Nonnull String[] columns) {}
 }
