@@ -22,7 +22,7 @@ public class PagerConfigure {
      */
     @Nonnull
     public String getPrefix() {
-        return prefix;
+        return this.prefix;
     }
 
     /**

@@ -4,6 +4,7 @@ import org.cat73.pager.bean.PageBody;
 import org.cat73.pager.export.IPagerExport;
 import org.cat73.pager.result.PagerResults;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.*;
 import java.util.Collection;
 import java.util.Map;
@@ -51,6 +52,7 @@ public @interface Pager {
      * <p>将请求参数中设置 pager 为 true 可在导出模式时继续分页</p>
      * @return 导出模式使用的导出实现
      */
+    @Nonnull
     Class<? extends IPagerExport> export() default IPagerExport.class;
 
     /**
@@ -60,6 +62,7 @@ public @interface Pager {
      * <p>如使用自己实现的导出类，可自行决定是否参考这个字段</p>
      * @return 导出的文件的文件名前缀
      */
+    @Nonnull
     String filenamePrefix() default "";
 
     /**
@@ -69,5 +72,6 @@ public @interface Pager {
      * <p>如使用自己实现的导出类，可自行决定是否参考这个字段</p>
      * @return 导出的 Excel 的列标题列表
      */
+    @Nonnull
     String[] exportColumns() default {};
 }

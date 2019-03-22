@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 返回值处理工具类
@@ -24,7 +25,7 @@ public final class PagerResults {
     /**
      * 处理器的缓存列表
      */
-    private static final Map<Class<?>, IPagerResultHandler<Object>> handlerCaches = new HashMap<>();
+    private static final Map<Class<?>, IPagerResultHandler<Object>> handlerCaches = new ConcurrentHashMap<>();
 
     /**
      * 注册一个返回值处理器，越晚注册的处理器会越优先被使用
@@ -152,12 +153,14 @@ public final class PagerResults {
             throw new PagerException(e);
         }
 
+        if (collection == null) {
+            return null;
+        }
+
         if (collection instanceof List) {
             return (List<?>) collection;
-        } else if (collection != null) {
-            return new ArrayList<>(collection);
         } else {
-            return null;
+            return new ArrayList<>(collection);
         }
     }
 

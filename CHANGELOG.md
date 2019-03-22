@@ -2,6 +2,7 @@
 * 现在使用导出模式时，可以再少写一点代码了
 * 一些性能优化
 * Fix [GitHub#1](https://github.com/Cat7373/mybatis-pager/issues/1)
+* 修复多线程使用时`PagerResults`可能会出现的异常
 
 # [v1.0.1-RELEASE] 2019-03-13
 * 简化返回值处理器的实现，多数情况下可以少覆盖一个方法了

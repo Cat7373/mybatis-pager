@@ -33,7 +33,7 @@ public final class PageBody<T> {
      */
     @Nonnull
     public List<T> getListData() {
-        return listData;
+        return this.listData;
     }
 
     /**
@@ -52,7 +52,7 @@ public final class PageBody<T> {
      * @return 当前是第几页
      */
     public long getPage() {
-        return page;
+        return this.page;
     }
 
     /**
@@ -71,7 +71,7 @@ public final class PageBody<T> {
      * @return 总记录数
      */
     public long getTotalRow() {
-        return totalRow;
+        return this.totalRow;
     }
 
     /**
@@ -90,7 +90,7 @@ public final class PageBody<T> {
      * @return 总页数
      */
     public long getTotalPage() {
-        return totalPage;
+        return this.totalPage;
     }
 
     /**
@@ -117,17 +117,17 @@ public final class PageBody<T> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(listData, page, totalRow, totalPage);
+        return Objects.hash(this.listData, this.page, this.totalRow, this.totalPage);
     }
 
     @Override
     @Nonnull
     public String toString() {
         return "PageBody{" +
-                "listData=" + listData +
-                ", page=" + page +
-                ", totalRow=" + totalRow +
-                ", totalPage=" + totalPage +
+                "listData=" + this.listData +
+                ", page=" + this.page +
+                ", totalRow=" + this.totalRow +
+                ", totalPage=" + this.totalPage +
                 '}';
     }
 }

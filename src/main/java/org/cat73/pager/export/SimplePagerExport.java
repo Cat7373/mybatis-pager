@@ -18,6 +18,10 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class SimplePagerExport<T> implements IPagerExport<T> {
+    /**
+     * 列标题列表
+     */
+    // TODO 下个大版本(2.x)去掉这个字段
     private List<String> columns;
 
     @Override

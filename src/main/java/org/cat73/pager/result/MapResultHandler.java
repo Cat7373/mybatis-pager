@@ -14,8 +14,7 @@ import java.util.Map;
 public final class MapResultHandler implements IPagerResultHandler<Map<String, Object>> {
     @Override
     public boolean support(@Nonnull Map<String, Object> result) {
-        Object data = result.get("data");
-        return data instanceof Collection;
+        return result.get("data") instanceof Collection;
     }
 
     @Override
