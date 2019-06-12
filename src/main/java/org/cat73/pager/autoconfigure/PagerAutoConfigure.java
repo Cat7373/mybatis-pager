@@ -9,7 +9,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 分页插件的自动配置类
@@ -31,11 +33,11 @@ public class PagerAutoConfigure {
      * 自动初始化返回值处理器
      * @param handlerList 返回值处理器的列表
      */
-    @Autowired
-    public void initialPagerResultHandlers(@Nonnull List<IPagerResultHandler<?>> handlerList) {
+    @Autowired(required = false)
+    public void initialPagerResultHandlers(@Nullable List<IPagerResultHandler<?>> handlerList) {
         // 内置的做第一个
         PagerResults.registerHandler(new MapResultHandler());
         // 扫描到的排序就不保证了，如有需要用户应手动调用注册方法，保证优先顺序
-        handlerList.forEach(PagerResults::registerHandler);
+        Optional.ofNullable(handlerList).ifPresent(l -> l.forEach(PagerResults::registerHandler));
     }
 }
