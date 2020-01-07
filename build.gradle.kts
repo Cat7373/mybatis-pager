@@ -9,12 +9,12 @@ apply(plugin = "org.gradle.signing")
 apply(plugin = "org.gradle.maven-publish")
 
 group = "org.cat73"
-version = "1.0.3-SNAPSHOT"
+version = "1.0.3-RELEASE"
 
 // 依赖版本控制
-val springBootVersion  = "2.1.3.RELEASE"
-val pagehelperVersion  = "1.2.10"
-val poiVersion         = "4.0.1"
+val springBootVersion  = "2.2.2.RELEASE"
+val pagehelperVersion  = "1.2.13"
+val poiVersion         = "4.1.1"
 val jsr305Version      = "3.0.2"
 val dependencyNames = mapOf(
         "spring-boot-starter-dependencies"    to "org.springframework.boot:spring-boot-dependencies:$springBootVersion",
