@@ -9,7 +9,7 @@ apply(plugin = "org.gradle.signing")
 apply(plugin = "org.gradle.maven-publish")
 
 group = "org.cat73"
-version = "1.0.4-RELEASE"
+version = "1.0.5-SNAPSHOT"
 
 // 依赖版本控制
 val springBootVersion  = "2.3.5.RELEASE"
